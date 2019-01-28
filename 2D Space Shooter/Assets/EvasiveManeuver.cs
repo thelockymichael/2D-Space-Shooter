@@ -19,7 +19,7 @@ public class EvasiveManeuver : MonoBehaviour
 
     void Start()
     {
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+      //  playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         rb = GetComponent<Rigidbody>();
         currentSpeed = rb.velocity.z;
         StartCoroutine(Evade());
@@ -31,8 +31,8 @@ public class EvasiveManeuver : MonoBehaviour
 
         while (true)
         {
-            // targetManeuver = Random.Range(1, dodge) * -Mathf.Sign(transform.position.x);
-            targetManeuver = playerTransform.position.x;
+             targetManeuver = Random.Range(1, dodge) * -Mathf.Sign(transform.position.x);
+            //targetManeuver = playerTransform.position.x;
 
             yield return new WaitForSeconds(Random.Range(maneuverTime.x, maneuverTime.y));
             targetManeuver = 0;
