@@ -19,6 +19,12 @@ public class PlayerController : MonoBehaviour
     public float tilt;
     public Boundary boundary;
 
+    public GameObject shot;
+    public Transform shotSpawn;
+    public float fireRate;
+
+    private float nextFire;
+
     private Rigidbody rb;
     // Start is called before the first frame update
     void Start()
@@ -26,6 +32,15 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
+    private void Update()
+    {
+        var InputDevice = InputManager.ActiveDevice;
+        if (InputDevice.Action1.WasPressed)
+        {
+            nextFire = Time.time + fireRate;
+            Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+        }         
+    }
     // Update is called once per frame
     void FixedUpdate()
     {
