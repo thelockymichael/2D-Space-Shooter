@@ -7,33 +7,50 @@ public class DestroyByContact : MonoBehaviour
     public GameObject playerExplosion;
     public int scoreValue;
     private GameController gameController;
-
+    private PauseMenuManager PauseMenuManager;
+       
     void Start()
     {
         GameObject gameControllerObject = GameObject.FindWithTag("GameController");
-        if (gameControllerObject != null)
+        gameController = gameControllerObject.GetComponent<GameController>();
+
+        GameObject PauseMenuManagerObject = GameObject.FindWithTag("MainMenuManager");
+        PauseMenuManager = PauseMenuManagerObject.GetComponent<PauseMenuManager>();
+
+        /*if (gameControllerObject != null)
         {
             gameController = gameControllerObject.GetComponent<GameController>();
         }
         if (gameController == null)
         {
             Debug.Log("Cannot find 'GameController' script");
-        }
+        }*/
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Boundary")
+        if (other.tag == "Boundary" || other.CompareTag ("Enemy"))
         {
             return;
         }
-        Instantiate(explosion, transform.position, transform.rotation);
+
+        if(explosion != null)
+        {
+            Instantiate(explosion, transform.position, transform.rotation);
+        }
+
         if (other.tag == "Player")
         {
+            PauseMenuManager.GameOver();
+            Destroy(other.gameObject);
             Instantiate(playerExplosion, other.transform.position, other.transform.rotation);
         }
-        gameController.AddScore(scoreValue);
-        Destroy(other.gameObject);
-        Destroy(gameObject);
+        else
+        {
+            gameController.AddScore(scoreValue);
+
+            Destroy(gameObject);
+        }
+       
     }
 }
