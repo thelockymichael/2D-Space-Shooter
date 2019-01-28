@@ -19,7 +19,10 @@ public class EvasiveManeuver : MonoBehaviour
 
     void Start()
     {
-      //  playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        // GameObject playerTransformObject = GameObject.FindWithTag("Player");
+        // playerTransform = playerTransformObject.GetComponent<Transform>();
+       // playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+
         rb = GetComponent<Rigidbody>();
         currentSpeed = rb.velocity.z;
         StartCoroutine(Evade());
@@ -31,8 +34,23 @@ public class EvasiveManeuver : MonoBehaviour
 
         while (true)
         {
-             targetManeuver = Random.Range(1, dodge) * -Mathf.Sign(transform.position.x);
-            //targetManeuver = playerTransform.position.x;
+
+          //  GameObject gameControllerObject = GameObject.FindWithTag("GameController");
+           
+
+            if (playerTransform != null)
+        {
+                playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+                targetManeuver = playerTransform.position.x;
+            }
+        if (playerTransform == null)
+        {
+            Debug.Log("Cannot find 'GameController' script");
+        }
+    
+
+             //targetManeuver = Random.Range(1, dodge) * -Mathf.Sign(transform.position.x);
+           
 
             yield return new WaitForSeconds(Random.Range(maneuverTime.x, maneuverTime.y));
             targetManeuver = 0;
