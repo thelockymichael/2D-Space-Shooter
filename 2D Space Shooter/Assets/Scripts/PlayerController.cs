@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 using InControl;
 
 
@@ -10,8 +11,6 @@ public class Boundary
     public float xMin, xMax, zMin, zMax;
 
 }
-
-
 
 public class PlayerController : MonoBehaviour
 {
@@ -26,9 +25,15 @@ public class PlayerController : MonoBehaviour
     private float nextFire;
 
     private Rigidbody rb;
+
+
+    // Audio
+    private AudioSource audio;
+
     // Start is called before the first frame update
     void Start()
     {
+        audio = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody>();
     }
 
@@ -37,6 +42,8 @@ public class PlayerController : MonoBehaviour
         var InputDevice = InputManager.ActiveDevice;
         if (InputDevice.Action1.WasPressed)
         {
+            Debug.Log(audio);
+            audio.Play();
             nextFire = Time.time + fireRate;
             Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
         }         
