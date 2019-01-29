@@ -13,8 +13,9 @@ public class GameController : MonoBehaviour
 
     public Text scoreText;
     public Text restartText;
-    public Text gameOverText;
+    public Text newHighScoreText;
     public Text highScoreText;
+    public Text gameOverText;
 
     private bool gameOver;
     private bool restart;
@@ -25,10 +26,12 @@ public class GameController : MonoBehaviour
         gameOver = false;
         restart = false;
         restartText.text = "";
+        newHighScoreText.text = "";
         gameOverText.text = "";
         score = 0;
         UpdateScore();
         StartCoroutine(SpawnWaves());
+        highScoreText.text = "Hiscore: " + PlayerPrefs.GetInt("HighScore", 0).ToString();
     }
 
     private void Update()
@@ -90,12 +93,20 @@ public class GameController : MonoBehaviour
 
     void UpdateScore()
     {
-        scoreText.text = "Score: " + score;
+        scoreText.text = "Score: " + score.ToString();
     }
 
     public void GameOver()
     {
         gameOverText.text = "game over";
         gameOver = true;
+        scoreText.text = "Score: " + score.ToString();
+
+        if(score > PlayerPrefs.GetInt("HighScore", 0))
+        {
+            PlayerPrefs.SetInt("HighScore", score);
+            highScoreText.text = score.ToString();
+            newHighScoreText.text = "New High \nScore!";
+        }
     }
 }
