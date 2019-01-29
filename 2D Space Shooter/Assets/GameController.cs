@@ -105,7 +105,7 @@ public class GameController : MonoBehaviour
         if(score > PlayerPrefs.GetInt("HighScore", 0))
         {
             PlayerPrefs.SetInt("HighScore", score);
-            highScoreText.text = score.ToString();
+            highScoreText.text = "Hiscore : " + score.ToString();
             newHighScoreText.text = "New High \nScore!";
         }
     }
