@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour
     public Text scoreText;
     public Text restartText;
     public Text gameOverText;
+    public Text highScoreText;
 
     private bool gameOver;
     private bool restart;
