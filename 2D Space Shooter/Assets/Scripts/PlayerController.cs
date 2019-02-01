@@ -40,9 +40,12 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody rb;
 
+    public GameObject playerExplosion;
 
     // Audio
     private AudioSource audio;
+    private GameController gameController;
+    private PauseMenuManager PauseMenuManager;
 
     private void Awake()
     {
@@ -53,6 +56,12 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameObject gameControllerObject = GameObject.FindWithTag("GameController");
+        gameController = gameControllerObject.GetComponent<GameController>();
+
+        GameObject PauseMenuManagerObject = GameObject.FindWithTag("MainMenuManager");
+        PauseMenuManager = PauseMenuManagerObject.GetComponent<PauseMenuManager>();
+
         audio = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody>();
     }
@@ -83,16 +92,19 @@ public class PlayerController : MonoBehaviour
     {
         // Set the death flag so this function won't be called again.
         isDead = true;
-
+        gameController.GameOver();
+        PauseMenuManager.GameOver();
+        Instantiate(playerExplosion, this.transform.position, this.transform.rotation);
+        Destroy(this.gameObject);
         // Turn off any remaining shooting effects.
-//        playerShooting.DisableEffects();
+        //        playerShooting.DisableEffects();
 
         // Tell the animator that the player is dead.
-  //      anim.SetTrigger("Die");
+        //      anim.SetTrigger("Die");
 
         // Set the audiosource to play the death clip and play it (this will stop the hurt sound from playing).
-    //    playerAudio.clip = deathClip;
-      //  playerAudio.Play();
+        //    playerAudio.clip = deathClip;
+        //  playerAudio.Play();
 
         // Turn off the movement and shooting scripts.
         //playerMovement.enabled = false;
@@ -102,6 +114,14 @@ public class PlayerController : MonoBehaviour
 
 private void Update()
     {
+        var InputDevice = InputManager.ActiveDevice;
+        if (InputDevice.Action1.WasPressed)
+        {
+            Debug.Log(audio);
+            audio.Play();
+            nextFire = Time.time + fireRate;
+            Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+        }
         // If the player has just been damaged...
         if (damaged)
         {
@@ -117,14 +137,7 @@ private void Update()
 
         // Reset the damaged flag.
         damaged = false;
-        var InputDevice = InputManager.ActiveDevice;
-        if (InputDevice.Action1.WasPressed)
-        {
-            Debug.Log(audio);
-            audio.Play();
-            nextFire = Time.time + fireRate;
-            Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
-        }         
+       
     }
     // Update is called once per frame
     void FixedUpdate()
