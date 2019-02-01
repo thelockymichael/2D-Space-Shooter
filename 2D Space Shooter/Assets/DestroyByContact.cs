@@ -8,7 +8,10 @@ public class DestroyByContact : MonoBehaviour
     public int scoreValue;
     private GameController gameController;
     private PauseMenuManager PauseMenuManager;
-       
+    private PlayerController playerController;
+
+    public int attackDamage = 10;               // The amount of health taken away per attack.
+
     void Start()
     {
         GameObject gameControllerObject = GameObject.FindWithTag("GameController");
@@ -16,6 +19,9 @@ public class DestroyByContact : MonoBehaviour
 
         GameObject PauseMenuManagerObject = GameObject.FindWithTag("MainMenuManager");
         PauseMenuManager = PauseMenuManagerObject.GetComponent<PauseMenuManager>();
+
+        GameObject PlayerMovementObject = GameObject.FindWithTag("Player");
+        playerController = PlayerMovementObject.GetComponent<PlayerController>();
 
         /*if (gameControllerObject != null)
         {
@@ -41,10 +47,12 @@ public class DestroyByContact : MonoBehaviour
 
         if (other.tag == "Player")
         {
+            playerController.TakeDamage(attackDamage);
+            /*
             gameController.GameOver();
             PauseMenuManager.GameOver();
             Destroy(other.gameObject);
-            Instantiate(playerExplosion, other.transform.position, other.transform.rotation);
+            Instantiate(playerExplosion, other.transform.position, other.transform.rotation);*/
         }
         else
         {

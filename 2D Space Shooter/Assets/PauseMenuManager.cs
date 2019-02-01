@@ -11,7 +11,7 @@ public class PauseMenuManager : MonoBehaviour
 
     public GameObject GameOverMenu;
 
-    private UIFader UIFaderController;
+
 
     private float gameOverWait = 1.5f;
    // private GameController gameController;
