@@ -3,12 +3,18 @@ using System.Collections;
 
 public class DestroyByContact : MonoBehaviour
 {
+    //Health
+    public int healthBonus = 20;
+
     public GameObject explosion;
     public GameObject playerExplosion;
     public int scoreValue;
     private GameController gameController;
     private PauseMenuManager PauseMenuManager;
     private PlayerController playerController;
+
+    public bool isPowerUpHealth;
+    public bool isFirePower;
 
     public int attackDamage = 10;               // The amount of health taken away per attack.
 
@@ -45,6 +51,28 @@ public class DestroyByContact : MonoBehaviour
             Instantiate(explosion, transform.position, transform.rotation);
         }
 
+        if (other.tag == "Player" && isPowerUpHealth)
+        {
+            playerController.GainHealth(healthBonus);
+            Destroy(this.gameObject);
+            /*
+            gameController.GameOver();
+            PauseMenuManager.GameOver();
+            Destroy(other.gameObject);
+            Instantiate(playerExplosion, other.transform.position, other.transform.rotation);*/
+        }
+
+        if (other.tag == "Player" && isFirePower)
+        {
+            playerController.GainFirePower();
+            Destroy(this.gameObject);
+            /*
+            gameController.GameOver();
+            PauseMenuManager.GameOver();
+            Destroy(other.gameObject);
+            Instantiate(playerExplosion, other.transform.position, other.transform.rotation);*/
+        }
+
         if (other.tag == "Player")
         {
             playerController.TakeDamage(attackDamage);
@@ -57,7 +85,7 @@ public class DestroyByContact : MonoBehaviour
         else
         {
             gameController.AddScore(scoreValue);
-
+            Destroy(other.gameObject);
             Destroy(gameObject);
         }
        

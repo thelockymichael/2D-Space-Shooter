@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 using InControl;
 
@@ -15,6 +16,16 @@ public class Boundary
 
 public class PlayerController : MonoBehaviour
 {
+    // Fire Power Variables
+    private bool timeOut;
+    private float timer;
+    private float innerTimer;
+
+    public float timeLimit;
+    public float aikaLoppuuLimit = 10f;
+
+    public bool FirePowerIsActive = false;
+
     //Health
 
     public int startingHealth = 100;                            // The amount of health the player starts the game with.
@@ -33,7 +44,7 @@ public class PlayerController : MonoBehaviour
     public Boundary boundary;
 
     public GameObject shot;
-    public Transform shotSpawn;
+    public Transform[] shotSpawns;
     public float fireRate;
 
     private float nextFire;
@@ -88,6 +99,54 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void GainHealth(int amount)
+    {
+        // Set the damaged flag so the screen will flash.
+        damaged = true;
+
+        // Reduce the current health by the damage amount.
+        currentHealth += amount;
+
+        // Set the health bar's value to the current health.
+        healthSlider.value = currentHealth;
+
+        // Play the hurt sound effect.
+        // playerAudio.Play();
+
+        // If the player has lost all it's health and the death flag hasn't been set yet...
+       /* if (currentHealth <= 0 && !isDead)
+        {
+            // ... it should die.
+            Death();
+        }*/
+    }
+
+    public void GainFirePower()
+    {
+        FirePowerIsActive = true;
+
+        // Set the damaged flag so the screen will flash.
+        damaged = true;
+
+        // Reduce the current health by the damage amount.
+       // currentHealth += amount;
+
+        // Set the health bar's value to the current health.
+        //healthSlider.value = currentHealth;
+
+        // Play the hurt sound effect.
+        // playerAudio.Play();
+
+        // If the player has lost all it's health and the death flag hasn't been set yet...
+        /* if (currentHealth <= 0 && !isDead)
+         {
+             // ... it should die.
+             Death();
+         }*/
+    }
+
+
+
     void Death()
     {
         // Set the death flag so this function won't be called again.
@@ -114,14 +173,63 @@ public class PlayerController : MonoBehaviour
 
 private void Update()
     {
-        var InputDevice = InputManager.ActiveDevice;
-        if (InputDevice.Action1.WasPressed)
+
+        if (timeOut)
         {
-            Debug.Log(audio);
-            audio.Play();
-            nextFire = Time.time + fireRate;
-            Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+            FirePowerIsActive = false;
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            timeOut = false;
         }
+        
+        if (FirePowerIsActive)
+        {
+          
+            Debug.Log(Mathf.Round(innerTimer));
+            timer += Time.deltaTime;
+            innerTimer -= Time.deltaTime;
+
+            if (timer > timeLimit)
+            {
+                timeOut = true;
+            }
+
+            if (timer > aikaLoppuuLimit)
+            {
+                //ShowText();
+            }
+        }
+        
+
+        
+
+        var InputDevice = InputManager.ActiveDevice;
+
+        if (InputDevice.Action1.WasPressed && Time.time > nextFire && !FirePowerIsActive)
+        {
+            nextFire = Time.time + fireRate;
+
+           
+                Instantiate(shot, shotSpawns[0].position, shotSpawns[0].rotation);
+            
+            audio.Play();
+
+            // Debug.Log(audio);
+
+        }
+
+        else if (InputDevice.Action1.WasPressed && Time.time > nextFire && FirePowerIsActive)
+        {
+            nextFire = Time.time + fireRate;
+
+
+            foreach (var shotSpawn in shotSpawns)
+            {
+                Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+            }
+            audio.Play();
+            // Debug.Log(audio);
+        }
+
         // If the player has just been damaged...
         if (damaged)
         {

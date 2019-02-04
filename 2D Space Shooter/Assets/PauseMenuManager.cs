@@ -11,7 +11,7 @@ public class PauseMenuManager : MonoBehaviour
 
     public GameObject GameOverMenu;
 
-
+    public bool openMenu = false;
 
     private float gameOverWait = 1.5f;
    // private GameController gameController;
@@ -42,9 +42,25 @@ public class PauseMenuManager : MonoBehaviour
 
     public void Pause()
     {
-        PauseMenu.SetActive(true);
-        Time.timeScale = 0.0f;
+       // PauseMenu.SetActive(true);
+       // Time.timeScale = 0.0f;
+        if (!openMenu)
+        {
 
+            openMenu = true;
+            PauseMenu.SetActive(true);
+            Time.timeScale = 0.0f;
+            Debug.Log("Menu open");
+            //Pause();
+        }
+        else if (openMenu)
+        {
+            openMenu = false;
+            PauseMenu.SetActive(false);
+            Time.timeScale = 1.0f;
+            Debug.Log("Menu close");
+            //Resume();
+        }
     }
 
     public void Resume()
