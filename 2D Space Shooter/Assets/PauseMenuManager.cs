@@ -44,7 +44,7 @@ public class PauseMenuManager : MonoBehaviour
     {
        // PauseMenu.SetActive(true);
        // Time.timeScale = 0.0f;
-        if (!openMenu)
+        if (!openMenu /*&& !GameOverMenu*/)
         {
 
             openMenu = true;
@@ -53,7 +53,7 @@ public class PauseMenuManager : MonoBehaviour
             Debug.Log("Menu open");
             //Pause();
         }
-        else if (openMenu)
+        else if (openMenu /*&& GameOverMenu*/)
         {
             openMenu = false;
             PauseMenu.SetActive(false);

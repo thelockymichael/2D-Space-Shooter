@@ -76,6 +76,7 @@ public class DestroyByContact : MonoBehaviour
         if (other.tag == "Player")
         {
             playerController.TakeDamage(attackDamage);
+            Destroy(this.gameObject);
             /*
             gameController.GameOver();
             PauseMenuManager.GameOver();
