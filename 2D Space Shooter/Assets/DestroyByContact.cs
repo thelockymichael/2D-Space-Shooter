@@ -12,9 +12,13 @@ public class DestroyByContact : MonoBehaviour
     private GameController gameController;
     private PauseMenuManager PauseMenuManager;
     private PlayerController playerController;
+    private DestroyByBoundary boundaryController;
 
     public bool isPowerUpHealth;
     public bool isFirePower;
+    public bool isDestroyAll;
+
+    public bool explode = false;
 
     public int attackDamage = 10;               // The amount of health taken away per attack.
 
@@ -29,6 +33,9 @@ public class DestroyByContact : MonoBehaviour
         GameObject PlayerMovementObject = GameObject.FindWithTag("Player");
         playerController = PlayerMovementObject.GetComponent<PlayerController>();
 
+        GameObject BoundaryObject = GameObject.FindWithTag("Boundary");
+        boundaryController = BoundaryObject.GetComponent<DestroyByBoundary>();
+
         /*if (gameControllerObject != null)
         {
             gameController = gameControllerObject.GetComponent<GameController>();
@@ -39,7 +46,21 @@ public class DestroyByContact : MonoBehaviour
         }*/
     }
 
-    void OnTriggerEnter(Collider other)
+    public void enemiesExplode()
+    {
+        Instantiate(this.explosion, this.transform.position, this.transform.rotation);
+    }
+
+   public void Update()
+    {
+        if (explode)
+        {
+            enemiesExplode();
+        }
+        
+    }
+
+    public void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Boundary" || other.CompareTag ("Enemy"))
         {
@@ -66,6 +87,17 @@ public class DestroyByContact : MonoBehaviour
         {
             playerController.GainFirePower();
             Destroy(this.gameObject);
+            /*
+            gameController.GameOver();
+            PauseMenuManager.GameOver();
+            Destroy(other.gameObject);
+            Instantiate(playerExplosion, other.transform.position, other.transform.rotation);*/
+        }
+
+        if (other.tag == "Player" && isDestroyAll)
+        {
+            boundaryController.destroyAll = true;
+            //Destroy(this.gameObject);
             /*
             gameController.GameOver();
             PauseMenuManager.GameOver();

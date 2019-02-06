@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     // Fire Power Variables
     private bool timeOut;
     private float timer;
+    private float timeAgain = 10f;
+
     private float innerTimer;
 
     public float timeLimit;
@@ -67,6 +69,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         GameObject gameControllerObject = GameObject.FindWithTag("GameController");
         gameController = gameControllerObject.GetComponent<GameController>();
 
@@ -89,7 +92,7 @@ public class PlayerController : MonoBehaviour
         healthSlider.value = currentHealth;
 
         // Play the hurt sound effect.
-       // playerAudio.Play();
+        // playerAudio.Play();
 
         // If the player has lost all it's health and the death flag hasn't been set yet...
         if (currentHealth <= 0 && !isDead)
@@ -114,11 +117,11 @@ public class PlayerController : MonoBehaviour
         // playerAudio.Play();
 
         // If the player has lost all it's health and the death flag hasn't been set yet...
-       /* if (currentHealth <= 0 && !isDead)
-        {
-            // ... it should die.
-            Death();
-        }*/
+        /* if (currentHealth <= 0 && !isDead)
+         {
+             // ... it should die.
+             Death();
+         }*/
     }
 
     public void GainFirePower()
@@ -126,10 +129,10 @@ public class PlayerController : MonoBehaviour
         FirePowerIsActive = true;
 
         // Set the damaged flag so the screen will flash.
-        damaged = true;
+        //damaged = true;
 
         // Reduce the current health by the damage amount.
-       // currentHealth += amount;
+        // currentHealth += amount;
 
         // Set the health bar's value to the current health.
         //healthSlider.value = currentHealth;
@@ -170,21 +173,39 @@ public class PlayerController : MonoBehaviour
         //playerShooting.enabled = false;
     }
 
+    IEnumerator StopSpeedUp()
+    {
+        yield return new WaitForSeconds(10.0f); // the number corresponds to the nuber of seconds the speed up will be applied
+        TimeOut();
+    }
 
-private void Update()
+
+    void TimeOut()
+    {
+        //timeAgain = timeLimit;
+        FirePowerIsActive = false;
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        timeOut = false;
+        Debug.Log(Mathf.Round(timeLimit));
+    }
+
+
+    private void Update()
     {
 
-        if (timeOut)
-        {
-            FirePowerIsActive = false;
-            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            timeOut = false;
-        }
-        
+       
+
         if (FirePowerIsActive)
         {
-          
-            Debug.Log(Mathf.Round(innerTimer));
+            StartCoroutine(StopSpeedUp());
+        }
+    
+
+        /*
+        if (FirePowerIsActive)
+        {
+           
+            Debug.Log(Mathf.Round(timer));
             timer += Time.deltaTime;
             innerTimer -= Time.deltaTime;
 
@@ -197,7 +218,7 @@ private void Update()
             {
                 //ShowText();
             }
-        }
+        }*/
         
 
         
