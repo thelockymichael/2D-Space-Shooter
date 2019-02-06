@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
-  
+    public Image image;
 
 
 
@@ -30,11 +30,14 @@ public class MenuManager : MonoBehaviour
     public void Play()
     {
         SceneManager.LoadScene("game");
-        Time.timeScale = 1.0f;
+    }
+    public void Story()
+    {
 
+        //SceneManager.LoadScene("game");
     }
 
- 
+
 
     // Update is called once per frame
     void Update()
