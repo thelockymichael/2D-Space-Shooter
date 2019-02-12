@@ -21,6 +21,10 @@ public class GameController : MonoBehaviour
     private bool restart;
     private int score;
 
+    int WaveCounter = 0;
+    int HazardCountIncrease = 1;
+    float SpawnSpeedIncrease = 0.001f;
+
     void Start()
     {
         gameOver = false;
@@ -36,7 +40,7 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-         if (restart)
+        if (restart)
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
@@ -50,22 +54,20 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(startWait);
         while (true)
         {
+            hazardCount += (WaveCounter * HazardCountIncrease);
             for (int i = 0; i < hazardCount; i++)
             {
                 GameObject hazard = hazards[Random.Range(0, hazards.Length)];
-                // bool flag = Random.value();
-                // if (flag)
-                //{
-                //
-                //}
+
                 Vector3 spawnPosition = new Vector3(Random.Range(-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
                 Quaternion spawnRotation = Quaternion.identity;
-               GameObject clone = Instantiate(hazard, spawnPosition, spawnRotation);
-              //  ReverseDirection(clone);
-                yield return new WaitForSeconds(spawnWait);
+
+                Instantiate(hazard, spawnPosition, spawnRotation);
+                yield return new WaitForSeconds(spawnWait - (WaveCounter * SpawnSpeedIncrease));
             }
             yield return new WaitForSeconds(waveWait);
-
+            WaveCounter++;
+            Debug.Log("Wave " + WaveCounter);
             if (gameOver)
             {
                 restartText.text = "try again";
@@ -74,6 +76,30 @@ public class GameController : MonoBehaviour
             }
         }
     }
+    /*
+    for (int i = 0; i < hazardCount; i++)
+    {
+        GameObject hazard = hazards[Random.Range(0, hazards.Length)];
+        // bool flag = Random.value();
+        // if (flag)
+        //{
+        //
+        //}
+        Vector3 spawnPosition = new Vector3(Random.Range(-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
+        Quaternion spawnRotation = Quaternion.identity;
+       GameObject clone = Instantiate(hazard, spawnPosition, spawnRotation);
+      //  ReverseDirection(clone);
+        yield return new WaitForSeconds(spawnWait);
+    }
+    yield return new WaitForSeconds(waveWait);
+
+    if (gameOver)
+    {
+        restartText.text = "try again";
+        restart = true;
+        break;
+    }*/
+
 
     /*
     void ReverseDirection(GameObject clone)
@@ -102,7 +128,7 @@ public class GameController : MonoBehaviour
         gameOver = true;
         scoreText.text = "Score: " + score.ToString();
 
-        if(score > PlayerPrefs.GetInt("HighScore", 0))
+        if (score > PlayerPrefs.GetInt("HighScore", 0))
         {
             PlayerPrefs.SetInt("HighScore", score);
             highScoreText.text = "Hiscore : " + score.ToString();

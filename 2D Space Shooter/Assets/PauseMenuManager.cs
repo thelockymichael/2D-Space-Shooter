@@ -19,11 +19,11 @@ public class PauseMenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       // UIFaderController = GetComponent<UIFader>();
+        // UIFaderController = GetComponent<UIFader>();
 
-       // GameObject UIFaderControllerObject = GameObject.FindWithTag("GameOverMenu");
+        // GameObject UIFaderControllerObject = GameObject.FindWithTag("GameOverMenu");
         //UIFaderController = UIFaderControllerObject.GetComponent<UIFader>();
-
+        Time.timeScale = 1.0f;
         PauseMenu.SetActive(false);
         GameOverMenu.SetActive(false);
     }
@@ -94,7 +94,7 @@ public class PauseMenuManager : MonoBehaviour
         GameOverMenu.SetActive(true);
 
         
-        Time.timeScale = 0.0f;
+       // Time.timeScale = 0.0f;
     }
     // Update is called once per frame
     void Update()

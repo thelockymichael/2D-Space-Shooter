@@ -7,26 +7,56 @@ public class DestroyByBoundary : MonoBehaviour
     private DestroyByContact destroyByContactController;
 
     public GameObject explosion;
+    private GameController gameController;
 
     // private GameObject destroyByContactObject;
 
     //GameObject[] objs;
     GameObject[] destroyByContactObject;
 
-    void explosions()
+    public GameObject enemyPrefab;
+    public GameObject[] enemies;
+    private void Update()
     {
-        foreach (GameObject enemy in destroyByContactObject)
+        if (enemies == null)
         {
-            //enemy.GetComponent<DestroyByContact>().enemiesExplode();
-            Debug.Log("Make enemies explode!");
-            Instantiate(explosion, enemy.transform.position, enemy.transform.rotation);
-            //Debug.Log("ENEMY FOUND");
         }
     }
 
+    public void explosions()
+    {
+        /* int vihu = 0;
+         vihu++;
+         int enemyAmount = vihu;
+         Debug.Log(enemyAmount);*/
+        enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        // Debug.Log(enemies.Length);
+        int i = enemies.Length;
+        gameController.AddScore(i * 20);
+        foreach (GameObject enemy in enemies)
+        {
+            i++;                                    //Increment loop
+            Debug.Log("EMEMIES = " + (i));
+            if (i == 0)
+            {
+                Debug.Log("NO EMEMIES LEFT IN SCENE");
+            }
+            // enemy.GetComponent<DestroyByContact>().enemiesExplode();
+            // Debug.Log("Make enemies explode!");
+            //  Instantiate(explosion, enemy.transform.position, enemy.transform.rotation);
+            //  Debug.Log("ENEMY FOUND");
+        }
+    }
+
+
+
     private void Start()
     {
-        destroyByContactObject = GameObject.FindGameObjectsWithTag("Enemy");   
+        GameObject gameControllerObject = GameObject.FindWithTag("GameController");
+        gameController = gameControllerObject.GetComponent<GameController>();
+
+        destroyByContactObject = GameObject.FindGameObjectsWithTag("Enemy");
 
         /*
         objs = GameObject.FindGameObjectsWithTag("LightUser");
@@ -60,17 +90,24 @@ public class DestroyByBoundary : MonoBehaviour
 
         if (other.tag == "Enemy" && destroyAll)
         {
-            //explosions();
+
+            explosions();
             Destroy(other.gameObject);
             StartCoroutine(destroyAllDelay());
         }
+        /*  if (destroyAll)
+          {
+              explosions();
+              Debug.Log("Make enemies explode!");
+
+          }*/
     }
 
-       IEnumerator destroyAllDelay()
+    IEnumerator destroyAllDelay()
     {
         yield return new WaitForSeconds(2.5f);
         destroyAll = false;
-       // destroyAllDisable();
+        // destroyAllDisable();
     }
     /*
     void destroyAllDisable()
