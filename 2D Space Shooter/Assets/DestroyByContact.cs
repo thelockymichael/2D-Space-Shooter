@@ -46,19 +46,7 @@ public class DestroyByContact : MonoBehaviour
         }*/
     }
 
-    public void enemiesExplode()
-    {
-        Instantiate(this.explosion, this.transform.position, this.transform.rotation);
-    }
 
-   public void Update()
-    {
-        if (explode)
-        {
-            enemiesExplode();
-        }
-        
-    }
 
     public void OnTriggerEnter(Collider other)
     {
