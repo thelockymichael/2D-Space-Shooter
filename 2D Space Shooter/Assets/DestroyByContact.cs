@@ -12,7 +12,7 @@ public class DestroyByContact : MonoBehaviour
     private GameController gameController;
     private PauseMenuManager PauseMenuManager;
     private PlayerController playerController;
-    private DestroyByBoundary boundaryController;
+    private DestroyByBoundary02 boundaryController;
 
     public bool isPowerUpHealth;
     public bool isFirePower;
@@ -34,7 +34,7 @@ public class DestroyByContact : MonoBehaviour
         playerController = PlayerMovementObject.GetComponent<PlayerController>();
 
         GameObject BoundaryObject = GameObject.FindWithTag("Boundary");
-        boundaryController = BoundaryObject.GetComponent<DestroyByBoundary>();
+        boundaryController = BoundaryObject.GetComponent<DestroyByBoundary02>();
 
         /*if (gameControllerObject != null)
         {

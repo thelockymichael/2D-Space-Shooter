@@ -21,6 +21,10 @@ public class GameController : MonoBehaviour
     private bool restart;
     private int score;
 
+    int WaveCounter = 0;
+    int HazardCountIncrease = 1;
+    float SpawnSpeedIncrease = 0.1f;
+
     void Start()
     {
         gameOver = false;
@@ -50,6 +54,20 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(startWait);
         while (true)
         {
+            hazardCount += (WaveCounter * HazardCountIncrease);
+            for (int i = 0; i < hazardCount; i++)
+            {
+                GameObject hazard = hazards[Random.Range(0, hazards.Length)];
+
+                Vector3 spawnPosition = new Vector3(Random.Range(-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
+                Quaternion spawnRotation = Quaternion.identity;
+
+                Instantiate(hazard, spawnPosition, spawnRotation);
+                yield return new WaitForSeconds(spawnWait - (WaveCounter * SpawnSpeedIncrease));
+            }
+            yield return new WaitForSeconds(waveWait);
+            WaveCounter++;
+            /*
             for (int i = 0; i < hazardCount; i++)
             {
                 GameObject hazard = hazards[Random.Range(0, hazards.Length)];
@@ -71,7 +89,7 @@ public class GameController : MonoBehaviour
                 restartText.text = "try again";
                 restart = true;
                 break;
-            }
+            }*/
         }
     }
 

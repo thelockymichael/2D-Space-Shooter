@@ -50,7 +50,7 @@ public class PauseMenuManager : MonoBehaviour
             openMenu = true;
             PauseMenu.SetActive(true);
             Time.timeScale = 0.0f;
-            Debug.Log("Menu open");
+          //  Debug.Log("Menu open");
             //Pause();
         }
         else if (openMenu /*&& GameOverMenu*/)
@@ -58,7 +58,7 @@ public class PauseMenuManager : MonoBehaviour
             openMenu = false;
             PauseMenu.SetActive(false);
             Time.timeScale = 1.0f;
-            Debug.Log("Menu close");
+//            Debug.Log("Menu close");
             //Resume();
         }
     }
